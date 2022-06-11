@@ -29,6 +29,11 @@ class Partenaire
      */
     private $logo;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isArchived;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -54,6 +59,18 @@ class Partenaire
     public function setLogo($logo): self
     {
         $this->logo = $logo;
+
+        return $this;
+    }
+
+    public function getIsArchived(): ?bool
+    {
+        return $this->isArchived;
+    }
+
+    public function setIsArchived(bool $isArchived): self
+    {
+        $this->isArchived = $isArchived;
 
         return $this;
     }
