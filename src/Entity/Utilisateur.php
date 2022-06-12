@@ -70,13 +70,13 @@ class Utilisateur implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getRoles(): array
+    public function getRoles(): String
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        // $roles = $this->roles;
+        // // guarantee every user at least has ROLE_USER
+        // $roles[] = 'ROLE_USER';
+        $role=$this->getRole();
+        return $role->getLibelle();
     }
 
     public function setRoles(array $roles): self
