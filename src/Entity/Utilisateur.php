@@ -23,9 +23,7 @@ class Utilisateur implements UserInterface
      */
     private $username;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    
     private $roles = [];
 
     /**
@@ -70,13 +68,12 @@ class Utilisateur implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getRoles(): String
+    public function getRoles(): array
     {
-        // $roles = $this->roles;
-        // // guarantee every user at least has ROLE_USER
-        // $roles[] = 'ROLE_USER';
-        $role=$this->getRole();
-        return $role->getLibelle();
+        //$roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_'.$this->role->getLibelle();
+        return ($roles);
     }
 
     public function setRoles(array $roles): self
