@@ -39,6 +39,23 @@ class Realisation
      */
     private $dateFin;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="realisations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $service;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Facture::class, inversedBy="realisation", cascade={"persist", "remove"})
+     */
+    private $facture;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Piscine::class, inversedBy="realisation", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $piscine;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,6 +105,42 @@ class Realisation
     public function setDateFin(?\DateTimeInterface $dateFin): self
     {
         $this->dateFin = $dateFin;
+
+        return $this;
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): self
+    {
+        $this->service = $service;
+
+        return $this;
+    }
+
+    public function getFacture(): ?Facture
+    {
+        return $this->facture;
+    }
+
+    public function setFacture(?Facture $facture): self
+    {
+        $this->facture = $facture;
+
+        return $this;
+    }
+
+    public function getPiscine(): ?Piscine
+    {
+        return $this->piscine;
+    }
+
+    public function setPiscine(Piscine $piscine): self
+    {
+        $this->piscine = $piscine;
 
         return $this;
     }

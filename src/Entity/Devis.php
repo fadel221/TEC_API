@@ -59,6 +59,16 @@ class Devis
      */
     private $telClient;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $adresseClient;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $emailClient;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -156,6 +166,30 @@ class Devis
     public function setTelClient(string $telClient): self
     {
         $this->telClient = $telClient;
+
+        return $this;
+    }
+
+    public function getAdresseClient(): ?string
+    {
+        return $this->adresseClient;
+    }
+
+    public function setAdresseClient(string $adresseClient): self
+    {
+        $this->adresseClient = $adresseClient;
+
+        return $this;
+    }
+
+    public function getEmailClient(): ?string
+    {
+        return $this->emailClient;
+    }
+
+    public function setEmailClient(string $emailClient): self
+    {
+        $this->emailClient = $emailClient;
 
         return $this;
     }

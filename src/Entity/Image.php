@@ -29,6 +29,17 @@ class Image
      */
     private $isAchived;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Piscine::class, inversedBy="images")
+     */
+    private $piscine;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Produit::class, inversedBy="images")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $produit;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -54,6 +65,30 @@ class Image
     public function setIsAchived(bool $isAchived): self
     {
         $this->isAchived = $isAchived;
+
+        return $this;
+    }
+
+    public function getPiscine(): ?Piscine
+    {
+        return $this->piscine;
+    }
+
+    public function setPiscine(?Piscine $piscine): self
+    {
+        $this->piscine = $piscine;
+
+        return $this;
+    }
+
+    public function getProduit(): ?Produit
+    {
+        return $this->produit;
+    }
+
+    public function setProduit(?Produit $produit): self
+    {
+        $this->produit = $produit;
 
         return $this;
     }

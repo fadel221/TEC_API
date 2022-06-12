@@ -49,6 +49,11 @@ class Facture
      */
     private $telClient;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Realisation::class, mappedBy="facture", cascade={"persist", "remove"})
+     */
+    private $realisation;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -122,6 +127,28 @@ class Facture
     public function setTelClient(?string $telClient): self
     {
         $this->telClient = $telClient;
+
+        return $this;
+    }
+
+    public function getRealisation(): ?Realisation
+    {
+        return $this->realisation;
+    }
+
+    public function setRealisation(?Realisation $realisation): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($realisation === null && $this->realisation !== null) {
+            $this->realisation->setFacture(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($realisation !== null && $realisation->getFacture() !== $this) {
+            $realisation->setFacture($this);
+        }
+
+        $this->realisation = $realisation;
 
         return $this;
     }

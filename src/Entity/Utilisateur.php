@@ -39,6 +39,12 @@ class Utilisateur implements UserInterface
      */
     private $avatar;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="utilisateurs")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $role;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -123,6 +129,18 @@ class Utilisateur implements UserInterface
     public function setAvatar($avatar): self
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getRole(): ?Role
+    {
+        return $this->role;
+    }
+
+    public function setRole(?Role $role): self
+    {
+        $this->role = $role;
 
         return $this;
     }
