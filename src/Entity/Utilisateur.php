@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UtilisateurRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
  */
-class Utilisateur implements UserInterface
+#[ApiResource]
+ class Utilisateur implements UserInterface
 {
     /**
      * @ORM\Id
@@ -32,7 +34,7 @@ class Utilisateur implements UserInterface
      */
     private $password;
 
-    /**
+    /*
      * @ORM\Column(type="blob", nullable=true)
      */
     private $avatar;
@@ -42,6 +44,43 @@ class Utilisateur implements UserInterface
      * @ORM\JoinColumn(nullable=false)
      */
     private $role;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nom;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $adresse;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $telephone;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isAuthorized;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dateCreation;
+
+    public function __construct()
+    {
+        $this->isAuthorized = false;
+        $this->dateCreation = new \DateTime();
+    }
+
 
     public function getId(): ?int
     {
@@ -61,7 +100,6 @@ class Utilisateur implements UserInterface
     public function setUsername(string $username): self
     {
         $this->username = $username;
-
         return $this;
     }
 
@@ -79,7 +117,6 @@ class Utilisateur implements UserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
-
         return $this;
     }
 
@@ -94,7 +131,6 @@ class Utilisateur implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -126,7 +162,6 @@ class Utilisateur implements UserInterface
     public function setAvatar($avatar): self
     {
         $this->avatar = $avatar;
-
         return $this;
     }
 
@@ -138,6 +173,73 @@ class Utilisateur implements UserInterface
     public function setRole(?Role $role): self
     {
         $this->role = $role;
+        return $this;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->Nom;
+    }
+
+    public function setNom(string $Nom): self
+    {
+        $this->Nom = $Nom;
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(?string $adresse): self
+    {
+        $this->adresse = $adresse;
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    public function getIsAuthorized(): ?bool
+    {
+        return $this->isAuthorized;
+    }
+
+    public function setIsAuthorized(bool $isAuthorized): self
+    {
+        $this->isAuthorized = $isAuthorized;
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->dateCreation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    {
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

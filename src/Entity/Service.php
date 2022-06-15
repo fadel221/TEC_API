@@ -41,9 +41,15 @@ class Service
      */
     private $realisations;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dateCreation;
+
     public function __construct()
     {
         $this->realisations = new ArrayCollection();
+        $this->dateCreation = new \DateTime();
     }
 
     public function getId(): ?int
@@ -113,6 +119,18 @@ class Service
                 $realisation->setService(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->dateCreation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    {
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

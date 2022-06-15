@@ -44,6 +44,16 @@ class Categorie
      */
     private $materiel;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dateCreation;
+    public function __construct()
+    {
+        $this->isArchived = false;
+        $this-> dateCreation = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -115,6 +125,18 @@ class Categorie
         }
 
         $this->materiel = $materiel;
+
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->dateCreation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    {
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

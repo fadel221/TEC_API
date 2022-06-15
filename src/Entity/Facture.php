@@ -54,6 +54,12 @@ class Facture
      */
     private $realisation;
 
+    public function __construct()
+    {
+        $this->isArchived = false;
+        $this-> dateCreation = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

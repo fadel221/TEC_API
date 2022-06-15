@@ -55,6 +55,12 @@ class Materiel
      */
     private $categorie;
 
+    public function __construct()
+    {
+        $this->isAvailable = true;
+        $this-> dateAchete = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

@@ -61,9 +61,16 @@ class Piscine
      */
     private $images;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dateCreation;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->isBuilt = false;
+        $this->dateCreation = new \DateTime();
     }
 
     public function getId(): ?int
@@ -186,6 +193,18 @@ class Piscine
                 $image->setPiscine(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->dateCreation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    {
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

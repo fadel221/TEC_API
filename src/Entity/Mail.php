@@ -34,6 +34,12 @@ class Mail
      */
     private $isReceived;
 
+    public function __construct()
+    {
+        $this->isReceived = false;
+        $this->dateCreation = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

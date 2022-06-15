@@ -69,6 +69,11 @@ class Devis
      */
     private $emailClient;
 
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -82,7 +87,6 @@ class Devis
     public function setLibelle(string $libelle): self
     {
         $this->libelle = $libelle;
-
         return $this;
     }
 

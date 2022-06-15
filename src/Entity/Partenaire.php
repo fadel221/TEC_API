@@ -34,6 +34,17 @@ class Partenaire
      */
     private $isArchived;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $date;
+
+    public function __construct()
+    {
+        $this->isArchived = false;
+        $this->date = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -71,6 +82,18 @@ class Partenaire
     public function setIsArchived(bool $isArchived): self
     {
         $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

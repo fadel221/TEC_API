@@ -36,9 +36,15 @@ class Role
      */
     private $utilisateurs;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dateCreation;
+
     public function __construct()
     {
         $this->utilisateurs = new ArrayCollection();
+        $this->dateCreation = new \DateTimeInterface();
     }
 
     public function getId(): ?int
@@ -66,7 +72,6 @@ class Role
     public function setIsArchived(bool $isArchived): self
     {
         $this->isArchived = $isArchived;
-
         return $this;
     }
 
@@ -97,6 +102,17 @@ class Role
             }
         }
 
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->dateCreation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    {
+        $this->dateCreation = $dateCreation;
         return $this;
     }
 }

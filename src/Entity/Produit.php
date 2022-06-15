@@ -47,9 +47,16 @@ class Produit
      */
     private $categorie;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dateCreation;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->isAvailable = true;
+        $this->dateCreation = new \DateTime();
     }
 
     public function getId(): ?int
@@ -131,6 +138,18 @@ class Produit
     public function setCategorie(Categorie $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->dateCreation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    {
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
