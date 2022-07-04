@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entity\Utilisateur;
+use App\Repository\RoleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,23 +12,44 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface as ValidatorValidatorInterface;
 class UserService {
-    function AddUser(EntityManagerInterface $entityMananger, Request $request ,UserPasswordEncoderInterface $encoder, $role, SerializerInterface $serializer,ValidatorValidatorInterface $validator) {
-        $user = $request->request->all();
-        $avatar = $request->files->get("avatar");
-        $avatar = fopen($avatar->getRealPath(),"rb");
+
+    private $entityMananger;
+    private $request;
+    private $encoder;
+    private $serializer;
+    private $validator;
+    private $imgService;
+    private $roleRep;
+    public function __construct( EntityManagerInterface $entityMananger, Request $request ,UserPasswordEncoderInterface $encoder,RoleRepository $roleRep, SerializerInterface $serializer,ValidatorValidatorInterface $validator,ImageService $imgService )
+    {
+        $this->$entityMananger=$entityMananger;
+        $this->$request=$request;
+        $this->$encoder=$encoder;
+        $this->$serializer=$serializer;
+        $this->$validator=$validator;
+        $this->$imgService=$imgService;
+        $this->roleRep=$roleRep;
+    }
+
+    function AddUser() {
+        $user = $this->request->request->all();
+        $avatar= $this->imgService -> getAvatar();
         $user["avatar"] = $avatar;
-        $user = $serializer->denormalize($user,"App\Entity\Utilisateur",true);
-        $errors= $validator->validate($user);
+        unset($user['avatar']);
+        $role=$this->roleRep->find($user["role_id"]);
+        unset($user['avatar']);
+        $user = $this->serializer->denormalize($user,"App\Entity\Utilisateur",true);
+        $user->setRole($role);
+        $errors= $this->validator->validate($user);
          if (count($errors))
          {
-             $errors = $serializer->serialize($errors,"json");
+             $errors = $this->serializer->serialize($errors,"json");
              return new JsonResponse($errors,Response::HTTP_BAD_REQUEST,[],true);
          }
-        $user->setisAuthorized(true);
         $password = $user->getPassword();
-        $user->setPassword($encoder->encodePassword($user,$password));
-        $entityMananger->persist($user);
-        $entityMananger->flush();
+        $user->setPassword($this->encoder->encodePassword($user,$password));
+        $this->entityMananger->persist($user);
+        $this->entityMananger->flush();
         fclose($avatar);
         return $user;
     }

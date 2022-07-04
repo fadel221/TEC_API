@@ -5,12 +5,76 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UtilisateurRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
+ *  @ApiResource(
+ *     * attributes={
+ *          "pagination_items_per_page"=10,
+ *      },
+ * 
+ *     collectionOperations={
+ *          "post"={
+ *              "method"="POST",
+ *              "path"="/admin/user",
+ *      "denormalization_context"={"groups"={"user_write",}}
+ *              
+ *          },
+ *         "get"={
+ *              "method"="GET",
+ *              "path"="/admin/users",
+ *              "normalization_context"={"groups"={"user_read",}}
+ *          },
+ * "get"={
+ *              "method"="GET",
+ *              "path"="/user/count",
+ *              "normalization_context"={"groups"={"user_read",}}
+ *          },
+ * 
+ *     },
+ *     
+ *     itemOperations={
+ * 
+ *          "get_user"={
+ *              "method"="GET",
+ *              "path"="/admin/users/{id}",
+ *              },
+ *          "assister_seance"={
+ *              "method"="GET",
+ *              "path"="/users/badge/{uuid}",
+ *              "normalization_context"={"groups"={"user_read"}},             
+ * },
+ *          
+ *         "get"={
+ *              "normalization_context"={"groups"={"user_read","user_details_read"}},
+ *              "path"="admin/users/{id}",
+ *              "requirements"={"id"="\d+"},
+ *              "defaults"={"id"=null}
+ *          },
+ *           
+ *         "delete"={
+ *              
+ *              "security_message"="Vous n'avez pas ces privileges.",
+ *              "path"="admin/users/{id}",
+ *              "requirements"={"id"="\d+"},
+ *          },
+ *         "patch"={
+ *               
+ *              "path"="admin/users/{id}",
+ *              "requirements"={"id"="\d+"},
+ *          },
+ *         "put"={
+ *               "path"="admin/users/{id}",
+ *              "requirements"={"id"="\d+"},
+ *          },
+ * 
+ *          
+ *     },
+ * )
  */
-#[ApiResource]
+
  class Utilisateur implements UserInterface
 {
     /**
@@ -22,6 +86,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"user_write"})
      */
     private $username;
 
@@ -31,6 +96,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups({"user_write"})
      */
     private $password;
 
@@ -41,27 +107,31 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
     /**
      * @ORM\ManyToOne(targetEntity=Role::class, inversedBy="utilisateurs")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $role;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user_write"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user_write"})
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user_write"})
      */
     private $telephone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user_write"})
      */
     private $email;
 
@@ -77,7 +147,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
     public function __construct()
     {
-        $this->isAuthorized = false;
+        $this->isAuthorized = true;
         $this->dateCreation = new \DateTime();
     }
 
@@ -172,18 +242,18 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
     public function setRole(?Role $role): self
     {
-        $this->role = $role;
+        $this->role = $role;    
         return $this;
     }
 
     public function getNom(): ?string
     {
-        return $this->Nom;
+        return $this->nom;
     }
 
     public function setNom(string $Nom): self
     {
-        $this->Nom = $Nom;
+        $this->nom = $Nom;
         return $this;
     }
 
@@ -240,7 +310,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
     public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
-
         return $this;
     }
 }

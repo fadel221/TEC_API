@@ -34,16 +34,23 @@ class Image
      */
     private $piscine;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Produit::class, inversedBy="images")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $produit;
+    
 
     /**
      * @ORM\Column(type="date")
      */
     private $dateCreation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="images")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $article;
+
+    /**
+     * @ORM\Column(type="blob")
+     */
+    private $file;
 
     public function __construct()
     {
@@ -92,17 +99,7 @@ class Image
         return $this;
     }
 
-    public function getProduit(): ?Produit
-    {
-        return $this->produit;
-    }
-
-    public function setProduit(?Produit $produit): self
-    {
-        $this->produit = $produit;
-
-        return $this;
-    }
+   
 
     public function getDateCreation(): ?\DateTimeInterface
     {
@@ -112,6 +109,30 @@ class Image
     public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    public function getArticle(): ?Article
+    {
+        return $this->article;
+    }
+
+    public function setArticle(?Article $article): self
+    {
+        $this->article = $article;
+
+        return $this;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile($file): self
+    {
+        $this->file = $file;
 
         return $this;
     }

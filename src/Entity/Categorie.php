@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CategorieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,24 +36,21 @@ class Categorie
      */
     private $isArchived;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Produit::class, mappedBy="categorie", cascade={"persist", "remove"})
-     */
-    private $produit;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Materiel::class, mappedBy="categorie", cascade={"persist", "remove"})
-     */
-    private $materiel;
-
+    
     /**
      * @ORM\Column(type="date")
      */
     private $dateCreation;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="categorie")
+     */
+    private $articles;
     public function __construct()
     {
         $this->isArchived = false;
         $this-> dateCreation = new \DateTime();
+        $this->articles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -95,39 +94,7 @@ class Categorie
         return $this;
     }
 
-    public function getProduit(): ?Produit
-    {
-        return $this->produit;
-    }
-
-    public function setProduit(Produit $produit): self
-    {
-        // set the owning side of the relation if necessary
-        if ($produit->getCategorie() !== $this) {
-            $produit->setCategorie($this);
-        }
-
-        $this->produit = $produit;
-
-        return $this;
-    }
-
-    public function getMateriel(): ?Materiel
-    {
-        return $this->materiel;
-    }
-
-    public function setMateriel(Materiel $materiel): self
-    {
-        // set the owning side of the relation if necessary
-        if ($materiel->getCategorie() !== $this) {
-            $materiel->setCategorie($this);
-        }
-
-        $this->materiel = $materiel;
-
-        return $this;
-    }
+   
 
     public function getDateCreation(): ?\DateTimeInterface
     {
@@ -137,6 +104,36 @@ class Categorie
     public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Article>
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->setCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): self
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getCategorie() === $this) {
+                $article->setCategorie(null);
+            }
+        }
 
         return $this;
     }

@@ -2,6 +2,17 @@
 
 namespace App\Services;
 
-class ImageService {
+use Symfony\Component\HttpFoundation\Request;
+
+class ImageService 
+{
+    function getAvatar(Request $request)
+    {
+        $req = $request->request->all();
+        $avatar = $request->files->get("avatar");
+        $avatar = fopen($avatar->getRealPath(),"rb");
+        $req["avatar"] = $avatar;
+        return $avatar;
+    }
 
 }
