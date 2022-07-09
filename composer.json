@@ -69,9 +69,15 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "compile":[
-            "symfony console doctrine:migrations:migrate"
+        "post-create-project-cmd": [
+            "@auto-scripts",
+            "composer dump-autoload --optimize",
+            "php bin/console cache:clear --env=prod",
+            "php bin/console doctrine:migrations:migrate --no-interaction --env=prod"
+
         ]
+        
+        
     },
     "conflict": {
         "symfony/symfony": "*"
