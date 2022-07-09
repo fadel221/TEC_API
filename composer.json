@@ -64,18 +64,15 @@
             "requirements-checker": "script"
         },
         "post-install-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "php bin/console doctrine:schema:update --force",
+            "php bin/console doctrine:fixtures:load --append"
+
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ],
-        "post-create-project-cmd": [
-            "@auto-scripts",
-            "composer dump-autoload --optimize",
-            "php bin/console cache:clear --env=prod",
-            "php bin/console doctrine:migrations:migrate --no-interaction --env=prod"
-
         ]
+        
         
         
     },
