@@ -1,0 +1,19 @@
+{
+    "success_url": "/",
+    "env": {
+      "APP_ENV": "prod",
+      "APP_SECRET": {"generator": "d59d3684d736df701f27aa5f7649c1c8"},
+      "CORS_ALLOW_ORIGIN": "https://tec-api-fadel221.koyeb.app/api"
+    },
+    "addons": [
+      "heroku-postgresql"
+    ],
+    "buildpacks": [
+      {
+        "url": "https://github.com/heroku/heroku-buildpack-php"
+      }
+    ],
+    "scripts": {
+      "postdeploy": "php bin/console doctrine:schema:create"
+    }
+  }
